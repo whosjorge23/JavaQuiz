@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 public class Main {
+
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_RED = "\u001B[31m";
@@ -11,46 +12,67 @@ public class Main {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
-    public static final String ANSI_LIGHT_YELLOW = "\u001B[93m";
-
-    public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
-    public static final String ANSI_BOLD = "\u001B[1m";
-    public static final String ANSI_UNBOLD = "\u001B[21m";
-    public static final String ANSI_UNDERLINE = "\u001B[4m";
-    public static final String ANSI_STOP_UNDERLINE = "\u001B[24m";
-    public static final String ANSI_BLINK = "\u001B[5m";
-
     public static void main(String[] args) {
+        String q1 = ANSI_BLUE+"What color are apples?\n"+ANSI_RESET
+                + "(a) red/green/yellow\n(b) orange\n(c) magenta";
+        String q2 = ANSI_BLUE+"What color are bananas?\n"+ANSI_RESET
+                + "(a) red/green/\n(b) yellow\n(c) blue";
+        String q3 = ANSI_BLUE+"What geometric shape is generally used for stop signs?\n"+ANSI_RESET
+                + "(a) square\n(b) octagon\n(c) pentagon";
+        String q4 = ANSI_BLUE+"Who named the Pacific Ocean?\n"+ANSI_RESET
+                + "(a) Ferdinand Magellan\n(b) Columbus\n(c) Amerigo Vespucci";
+        String q5 = ANSI_BLUE+"Which animal can be seen on the Porsche logo?\n"+ANSI_RESET
+                + "(a) Trident\n(b) Bull\n(c) Horse";
+        String q6 = ANSI_BLUE+"What is the name of the largest ocean on earth?\n"+ANSI_RESET
+                + "(a) Atlantic Ocean\n(b) Indian Ocean\n(c) Pacific Ocean";
+        String q7 = ANSI_BLUE+"Demolition of the Berlin wall separating East and West Germany began in what year?\n"+ANSI_RESET
+                + "(a) 1989\n(b) 1987\n(c) 1991";
+        String q8 = ANSI_BLUE+"What is the rarest M&M color?\n"+ANSI_RESET
+                + "(a) Yellow\n(b) Red\n(c) Brown";
+        String q9 = ANSI_BLUE+"What is the common name for dried plums?\n"+ANSI_RESET
+                + "(a) DehydratedPlums\n(b) Prunes\n(c) Dry Plums";
+        String q10 = ANSI_BLUE+"What was the first soft drink in space?\n"+ANSI_RESET
+                + "(a) Pepsi\n(b) Dr. Pepper\n(c) Coca-Cola";
+
+        Question [] questions = {
+                new Question(q1,"a"),
+                new Question(q2,"b"),
+                new Question(q3,"b"),
+                new Question(q4,"a"),
+                new Question(q5,"c"),
+                new Question(q6,"c"),
+                new Question(q7,"a"),
+                new Question(q8,"c"),
+                new Question(q9,"b"),
+                new Question(q10,"c"),
+        };
+
+        takeTest(questions);
+    }
+
+    public static void takeTest(Question [] questions) {
+        int score = 0;
         Scanner keyboardInput = new Scanner(System.in);
-	    String secretWord = "java";
-        String guess = "";
-        int guessCount = 0;
-        int guessLimit = 10;
-        boolean outOfGuesses = false;
-        int colorAttempt;
 
-        while (!guess.equals(secretWord) && !outOfGuesses) {
-            colorAttempt = (guessLimit - guessCount);
-            if (guessCount < guessLimit) {
-                if (colorAttempt <= 10 && colorAttempt >=8){
-                    System.out.println(ANSI_GREEN + "ATTEMPT LEFT: " + ANSI_RESET + (guessLimit - guessCount));
-                }else if (colorAttempt < 8 && colorAttempt >3){
-                    System.out.println(ANSI_YELLOW + "ATTEMPT LEFT: " + ANSI_RESET + (guessLimit - guessCount));
-                }else {
-                    System.out.println(ANSI_RED + "ATTEMPT LEFT: " + ANSI_RESET + (guessLimit - guessCount));
-                }
+        for (int i = 0; i < questions.length; i++) {
+            System.out.println(questions[i].prompt);
+            String answer = keyboardInput.nextLine();
 
-                System.out.println("Enter a guess for programming language: ");
-                guess = keyboardInput.nextLine().toLowerCase();
-                guessCount++;
+            if (answer.equals(questions[i].answer)) {
+                score++;
+                //System.out.println("Correct Answer");
             }else {
-                outOfGuesses = true;
+                System.out.println(ANSI_YELLOW+"The correct answer is: " + questions[i].answer +ANSI_RESET + "\n");
             }
         }
-        if (outOfGuesses) {
-            System.out.println(ANSI_RED +"You Lose! You are out of guesses."+ ANSI_RESET);
-        }else {
-            System.out.println(ANSI_GREEN +"You Win!"+ ANSI_RESET);
+        keyboardInput.close();
+        //System.out.println("You got " + score + "/" + questions.length);
+        if (score == questions.length) {
+            System.out.println(ANSI_GREEN+"You got " + score + "/" + questions.length + ". You nailed the test."+ANSI_RESET);
+        }else if (score <= 9 && score >= 6){
+            System.out.println(ANSI_YELLOW+"You got " + score + "/" + questions.length + ". Well done, but you could be better."+ANSI_RESET);
+        }else if (score < 5){
+            System.out.println(ANSI_RED+"You got " + score + "/" + questions.length + ". Too bad, it is better you try the test again."+ANSI_RESET);
         }
     }
 }
